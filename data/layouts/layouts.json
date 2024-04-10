@@ -4294,7 +4294,7 @@
     {
       "id": "LAYOUT_BATTLE_FRONTIER_SCOTTS_HOUSE",
       "name": "BattleFrontier_ScottsHouse_Layout",
-      "width": 6,
+      "width": 10,
       "height": 8,
       "primary_tileset": "gTileset_Building",
       "secondary_tileset": "gTileset_BattleFrontier",
