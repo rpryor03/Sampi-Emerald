@@ -12,6 +12,8 @@ AbandonedShip_CaptainsOffice_EventScript_CaptSternAide::
 	release
 	end
 
+	
+
 AbandonedShip_CaptainsOffice_EventScript_CanYouDeliverScanner::
 	msgbox AbandonedShip_CaptainsOffice_Text_OhCanYouDeliverScanner, MSGBOX_DEFAULT
 	release
