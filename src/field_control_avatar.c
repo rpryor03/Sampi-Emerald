@@ -3,6 +3,7 @@
 #include "bike.h"
 #include "coord_event_weather.h"
 #include "daycare.h"
+#include "dexnav.h"
 #include "debug.h"
 #include "faraway_island.h"
 #include "event_data.h"
@@ -95,7 +96,7 @@ void FieldClearPlayerInput(struct FieldInput *input)
     input->heldDirection2 = FALSE;
     input->tookStep = FALSE;
     input->pressedBButton = FALSE;
-    input->input_field_1_0 = FALSE;
+    input->pressedRButton = FALSE;
     input->input_field_1_1 = FALSE;
     input->input_field_1_2 = FALSE;
     input->input_field_1_3 = FALSE;
@@ -121,6 +122,8 @@ void FieldGetPlayerInput(struct FieldInput *input, u16 newKeys, u16 heldKeys)
                 input->pressedAButton = TRUE;
             if (newKeys & B_BUTTON)
                 input->pressedBButton = TRUE;
+            if (newKeys & R_BUTTON && !FlagGet(FLAG_SYS_DEXNAV_SEARCH))
+                input->pressedRButton = TRUE;
         }
 
         if (heldKeys & (DPAD_UP | DPAD_DOWN | DPAD_LEFT | DPAD_RIGHT))
@@ -235,36 +238,15 @@ int ProcessPlayerFieldInput(struct FieldInput *input)
         ShowStartMenu();
         return TRUE;
     }
+    
+    if (input->tookStep && TryFindHiddenPokemon())
+        return TRUE;
+    
     if (input->pressedSelectButton && UseRegisteredKeyItemOnField() == TRUE)
         return TRUE;
-
-            if (input->pressedRButton && TestPlayerAvatarFlags(PLAYER_AVATAR_FLAG_MACH_BIKE | PLAYER_AVATAR_FLAG_ACRO_BIKE))
-    {
-        if (gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_MACH_BIKE)
-        {
-            gPlayerAvatar.flags -= PLAYER_AVATAR_FLAG_MACH_BIKE;
-            gPlayerAvatar.flags += PLAYER_AVATAR_FLAG_ACRO_BIKE;
-            SetPlayerAvatarTransitionFlags(PLAYER_AVATAR_FLAG_ACRO_BIKE);
-            PlaySE(SE_BIKE_HOP);
-        }
-        else
-        {
-            gPlayerAvatar.flags -= PLAYER_AVATAR_FLAG_ACRO_BIKE;
-            gPlayerAvatar.flags += PLAYER_AVATAR_FLAG_MACH_BIKE;
-            SetPlayerAvatarTransitionFlags(PLAYER_AVATAR_FLAG_MACH_BIKE);
-            PlaySE(SE_BIKE_BELL);
-        }
-    }
-
-#if DEBUG_OVERWORLD_MENU == TRUE && DEBUG_OVERWORLD_IN_MENU == FALSE
-    if (input->input_field_1_2)
-    {
-        PlaySE(SE_WIN_OPEN);
-        FreezeObjectEvents();
-        Debug_ShowMainMenu();
+    
+    if (input->pressedRButton && TryStartDexnavSearch())
         return TRUE;
-    }
-#endif
 
     return FALSE;
 }

@@ -1077,3 +1077,5 @@ EventScript_VsSeekerChargingDone::
 	.include "data/text/save.inc"
 	.include "data/scripts/rotom.inc"
 	.include "data/text/birch_speech.inc"
+    .include "data/scripts/dexnav.inc"
+    
