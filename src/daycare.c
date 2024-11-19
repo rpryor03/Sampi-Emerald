@@ -841,7 +841,8 @@ static void BuildEggMoveset(struct Pokemon *egg, struct BoxPokemon *father, stru
         sHatchedEggFatherMoves[i] = MOVE_NONE;
         sHatchedEggFinalMoves[i] = MOVE_NONE;
     }
-    ClearHatchedEggMoves();
+    for (i = 0; i < EGG_MOVES_ARRAY_COUNT; i++)
+        sHatchedEggEggMoves[i] = MOVE_NONE;
     for (i = 0; i < EGG_LVL_UP_MOVES_ARRAY_COUNT; i++)
         sHatchedEggLevelUpMoves[i] = MOVE_NONE;
 
@@ -851,32 +852,8 @@ static void BuildEggMoveset(struct Pokemon *egg, struct BoxPokemon *father, stru
         sHatchedEggFatherMoves[i] = GetBoxMonData(father, MON_DATA_MOVE1 + i);
         sHatchedEggMotherMoves[i] = GetBoxMonData(mother, MON_DATA_MOVE1 + i);
     }
-
+//Inherit egg moves:
     numEggMoves = GetEggMoves(egg, sHatchedEggEggMoves);
-
-    if (P_MOTHER_EGG_MOVE_INHERITANCE >= GEN_6)
-    {
-        for (i = 0; i < MAX_MON_MOVES; i++)
-        {
-            if (sHatchedEggMotherMoves[i] != MOVE_NONE)
-            {
-                for (j = 0; j < numEggMoves; j++)
-                {
-                    if (sHatchedEggMotherMoves[i] == sHatchedEggEggMoves[j])
-                    {
-                        if (GiveMoveToMon(egg, sHatchedEggMotherMoves[i]) == MON_HAS_MAX_MOVES)
-                            DeleteFirstMoveAndGiveMoveToMon(egg, sHatchedEggMotherMoves[i]);
-                        break;
-                    }
-                }
-            }
-            else
-            {
-                break;
-            }
-        }
-    }
-
     for (i = 0; i < MAX_MON_MOVES; i++)
     {
         if (sHatchedEggFatherMoves[i] != MOVE_NONE)
@@ -891,31 +868,50 @@ static void BuildEggMoveset(struct Pokemon *egg, struct BoxPokemon *father, stru
                 }
             }
         }
+		if (sHatchedEggMotherMoves[i] != MOVE_NONE)
+        {
+            for (j = 0; j < numEggMoves; j++)
+            {
+                if (sHatchedEggMotherMoves[i] == sHatchedEggEggMoves[j])
+                {
+                    if (GiveMoveToMon(egg, sHatchedEggMotherMoves[i]) == MON_HAS_MAX_MOVES)
+                        DeleteFirstMoveAndGiveMoveToMon(egg, sHatchedEggMotherMoves[i]);
+                    break;
+                }
+            }
+        }
         else
         {
             break;
         }
     }
-
-    if (P_TM_INHERITANCE < GEN_6)
+//Inherit TM/HM moves:
+    for (i = 0; i < MAX_MON_MOVES; i++)
     {
-        for (i = 0; i < MAX_MON_MOVES; i++)
+        if (sHatchedEggFatherMoves[i] != MOVE_NONE)
         {
-            if (sHatchedEggFatherMoves[i] != MOVE_NONE)
+            for (j = 0; j < NUM_TECHNICAL_MACHINES + NUM_HIDDEN_MACHINES; j++)
             {
-                for (j = 0; j < NUM_TECHNICAL_MACHINES + NUM_HIDDEN_MACHINES; j++)
+                if (sHatchedEggFatherMoves[i] == ItemIdToBattleMoveId(ITEM_TM01_FOCUS_PUNCH + j) && CanMonLearnTMHM(egg, j))
                 {
-                    u16 moveId = ItemIdToBattleMoveId(ITEM_TM01 + j);
-                    if (sHatchedEggFatherMoves[i] == moveId && CanLearnTeachableMove(GetMonData(egg, MON_DATA_SPECIES_OR_EGG), moveId))
-                    {
-                        if (GiveMoveToMon(egg, sHatchedEggFatherMoves[i]) == MON_HAS_MAX_MOVES)
-                            DeleteFirstMoveAndGiveMoveToMon(egg, sHatchedEggFatherMoves[i]);
-                    }
+                    if (GiveMoveToMon(egg, sHatchedEggFatherMoves[i]) == MON_HAS_MAX_MOVES)
+                        DeleteFirstMoveAndGiveMoveToMon(egg, sHatchedEggFatherMoves[i]);
+                }
+            }
+        }
+		if (sHatchedEggMotherMoves[i] != MOVE_NONE)
+        {
+            for (j = 0; j < NUM_TECHNICAL_MACHINES + NUM_HIDDEN_MACHINES; j++)
+            {
+                if (sHatchedEggMotherMoves[i] == ItemIdToBattleMoveId(ITEM_TM01_FOCUS_PUNCH + j) && CanMonLearnTMHM(egg, j))
+                {
+                    if (GiveMoveToMon(egg, sHatchedEggMotherMoves[i]) == MON_HAS_MAX_MOVES)
+                        DeleteFirstMoveAndGiveMoveToMon(egg, sHatchedEggMotherMoves[i]);
                 }
             }
         }
     }
-
+//Inherit level up moves if both parents know that move?:
     for (i = 0; i < MAX_MON_MOVES; i++)
     {
         if (sHatchedEggFatherMoves[i] == MOVE_NONE)
