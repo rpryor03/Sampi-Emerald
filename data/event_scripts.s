@@ -1070,4 +1070,5 @@ EventScript_VsSeekerChargingDone::
 	.include "data/scripts/test_signpost.inc"
 	.include "data/text/frontier_brain.inc"
 	.include "data/text/save.inc"
+	.include "data/scripts/rotom.inc"
 	.include "data/text/birch_speech.inc"
