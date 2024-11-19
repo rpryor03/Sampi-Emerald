@@ -1781,6 +1781,11 @@
 	.2byte \quantity
 	.endm
 
+	@ Ceases movement for the event obj. the Player is currently interacting with and that one alone.
+	.macro locktarget
+	.byte 0xe5
+	.endm
+
 	.macro _dynmultichoice left:req, top:req, ignoreBPress:req, maxBeforeScroll:req, shouldSort:req, initialSelected:req, callbacks:req argv:vararg
 	.byte 0xe3
 	.2byte \left

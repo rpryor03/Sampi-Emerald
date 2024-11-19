@@ -231,6 +231,7 @@ gScriptCmdTable::
 	.4byte ScrCmd_hideitemdesc              			@ 0xe4
 	.4byte ScrCmd_dynmultichoice                    @ 0xe3
 	.4byte ScrCmd_dynmultipush                      @ 0xe4
+	.4byte ScrCmd_locktarget                @ 0xe5
 
 gScriptCmdTableEnd::
 	.4byte ScrCmd_nop
