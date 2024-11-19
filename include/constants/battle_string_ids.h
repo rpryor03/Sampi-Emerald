@@ -383,7 +383,10 @@
 #define STRINGID_PKMNBOXLANETTESPCFULL      378
 #define STRINGID_TRAINER1WINTEXT            379
 #define STRINGID_TRAINER2WINTEXT            380
-#define STRINGID_RUNPROMPT                  381
+#define STRINGID_PKMNDROPPEDITEM            381
+#define STRINGID_ADDEDTOBAG                 382
+#define STRINGID_BAGISFULL                  383
+#define STRINGID_RUNPROMPT                  384
 
 #define STRINGID_ENDUREDSTURDY                        381
 #define STRINGID_POWERHERB                            382
