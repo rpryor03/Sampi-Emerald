@@ -20,6 +20,7 @@
 #include "tv.h"
 #include "apprentice.h"
 #include "pokedex.h"
+#include "abilities.h"
 #include "recorded_battle.h"
 #include "data.h"
 #include "record_mixing.h"
@@ -38,6 +39,7 @@
 #include "constants/items.h"
 #include "constants/event_objects.h"
 #include "party_menu.h"
+#include "constants/abilities.h"
 
 struct FrontierBrainMon
 {
