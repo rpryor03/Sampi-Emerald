@@ -42,8 +42,8 @@ static const u8 *const sBirchDexRatingTexts[BIRCH_DEX_STRINGS] =
     gBirchDexRatingText_LessThan160,
     gBirchDexRatingText_LessThan170,
     gBirchDexRatingText_LessThan180,
-    gBirchDexRatingText_LessThan190,
-    gBirchDexRatingText_LessThan200,
+    gBirchDexRatingText_LessThan201,
+    gBirchDexRatingText_LessThan301,
     gBirchDexRatingText_DexCompleted,
 };
 
